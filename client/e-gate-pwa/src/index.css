@@ -1,0 +1,26 @@
+#root {
+	box-sizing: border-box;
+	height: 100dvh;
+}
+#root nav {
+	background-color: #e1e1e1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 50;
+}
+#root > nav .crop {
+	width: 70px;
+	height: 70px;
+	overflow: hidden;
+	margin-right: 10px;
+}
+#root > nav img {
+	width: 135px;
+	height: 135px;
+	margin: -32px -32px;
+}
+em {
+	color: #44a9d4;
+}

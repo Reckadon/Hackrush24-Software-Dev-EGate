@@ -20,7 +20,7 @@ const Content = () => {
 			setExtendResident(true);
 			setExtendVisitor(false);
 		} else {
-			const data = { profile: profilePic, residentType: residentType, gradYear: gradYear };
+			const data = { profile: profilePic, userType: residentType, graduation: gradYear };
 			sessionStorage.setItem("reg-data", data);
 			signInWithRedirect(auth, provider);
 		}

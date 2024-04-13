@@ -44,7 +44,7 @@ const Content = () => {
 					Register as <br />
 					<em>Resident</em>
 				</h2>
-				<div style={{ display: "flex", width: "100%", flexGrow: "1" }}>
+				<div>
 					<div className="icon-holder">
 						<MapsHomeWorkIcon fontSize="large" />
 					</div>

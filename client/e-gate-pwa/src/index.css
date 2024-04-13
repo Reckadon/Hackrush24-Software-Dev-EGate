@@ -24,3 +24,9 @@
 em {
 	color: #44a9d4;
 }
+
+@media only screen and (max-width: 900px) {
+	#root {
+		min-height: 100dvh;
+	}
+}

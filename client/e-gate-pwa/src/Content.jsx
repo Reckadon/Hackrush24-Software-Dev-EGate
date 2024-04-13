@@ -1,9 +1,9 @@
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { getAuth, signInWithRedirect } from "firebase/auth";
 import provider from "../auth_provider";
 
 const Content = () => {

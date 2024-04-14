@@ -120,15 +120,7 @@ const Content = ({ userData }) => {
 								}}
 							/>
 						</label>
-						<Form.Label>
-							Purpose of Visit:
-							<Form.Control
-								type="text"
-								placeholder="Enter your purpose of visiting"
-								value={purpose}
-								onChange={e => setPurpose(e.target.value)}
-							/>
-						</Form.Label>
+
 						<Form.Label htmlFor="inputPassword5">
 							Resident Type
 							<Form.Select
@@ -190,6 +182,15 @@ const Content = ({ userData }) => {
 								}}
 							/>
 						</label>
+						<Form.Label>
+							Purpose of Visit:
+							<Form.Control
+								type="text"
+								placeholder="Enter your purpose of visiting"
+								value={purpose}
+								onChange={e => setPurpose(e.target.value)}
+							/>
+						</Form.Label>
 						<Form.Label>
 							Entry Time:
 							<Form.Control

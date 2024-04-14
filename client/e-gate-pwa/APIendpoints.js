@@ -12,4 +12,5 @@ export const API = {
   VerifyQR: qr => axios.get(SERVER_URL + "qrs/verify/" + qr),
   GetAlerts: () => axios.get(SERVER_URL + "logs/alerts"),
   GetAllLogs: () => axios.get(SERVER_URL + "logs"),
+  GetStats: () => axios.get(SERVER_URL + "logs/stats"),
 };

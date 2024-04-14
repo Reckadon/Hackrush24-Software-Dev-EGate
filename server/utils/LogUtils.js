@@ -29,7 +29,6 @@ export const getAllLogs = async () => {
         time: data.time,
         user: await getUser(data.uuid),
       };
-      console.log(log);
       logs.push(log);
     });
     return logs;

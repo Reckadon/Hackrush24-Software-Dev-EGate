@@ -11,6 +11,7 @@ const SecurityUI = () => {
 	const [isScanning, setIsScanning] = useState(true);
 	const [scannedUserData, setScannedUserData] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [isValid, setIsValid] = useState(false);
 
 	const sendQR = async e => {
 		setIsScanning(false);
@@ -18,8 +19,9 @@ const SecurityUI = () => {
 		const res = await API.VerifyQR(e);
 		setLoading(false);
 		if (res.data.isValid) {
+			setIsValid(true);
 			setScannedUserData(res.data.user);
-		}
+		} else setIsValid(false);
 	};
 
 	return (
@@ -54,13 +56,13 @@ const SecurityUI = () => {
 				/>
 			) : loading ? (
 				<h2>Loading</h2>
-			) : scannedUserData.isValid ? (
+			) : isValid ? (
 				<VerifiedUserBlock userData={scannedUserData} />
 			) : (
-				<>
+				<div className="user-block">
 					<CloseIcon color="red" />
 					<h2>Not Valid QR</h2>
-				</>
+				</div>
 			)}
 			{!isScanning && (
 				<Button

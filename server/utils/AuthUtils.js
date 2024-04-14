@@ -56,7 +56,7 @@ export const createGuestUser = async (
     if (userType === "Resident's Guest") {
       user.residentEmailID = residentEmailID;
     }
-    user.qr = (await createQR(user.uuid, exitTime, "guest")).qr;
+    user.qr = (await createQR(uuid, exitTime, "guest")).qr;
     await db.collection("guestUsers").doc(uuid).set(user);
     return user;
   } catch (error) {
@@ -86,4 +86,17 @@ export const getGuestUser = async uuid => {
     return null;
   }
   return userDoc.data();
+};
+
+export const getGuestUserByQR = async qr => {
+  const qrDoc = await db.collection("qrs").doc(qr).get();
+  if (!qrDoc.exists) {
+    return null;
+  }
+
+  if (qrDoc.data().userType === "resident") {
+    return (await db.collection("users").doc(qrDoc.data().uuid).get()).data();
+  } else {
+    return (await db.collection("guestUsers").doc(qrDoc.data().uuid).get()).data();
+  }
 };

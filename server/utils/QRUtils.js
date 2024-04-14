@@ -1,3 +1,5 @@
+import { db } from "./FirebaseUtils.js";
+
 const generateRandomString = length => {
   let result = "";
   const characters = "0123456789";
@@ -9,7 +11,7 @@ const generateRandomString = length => {
 };
 
 export const createQR = async (uuid, expiry) => {
-  qr = {
+  const qr = {
     uuid,
     qr: generateRandomString(64),
     expiry: new Date(expiry).getTime(),

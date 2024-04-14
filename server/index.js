@@ -2,6 +2,7 @@ import express from "express";
 import authRouter from "./routes/AuthRouter.js";
 import qrRouter from "./routes/QRRouter.js";
 import guestRouter from "./routes/GuestRouter.js";
+import logsRouter from "./routes/LogRouter.js";
 import cors from "cors";
 
 const PORT = 3000;
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRouter);
 app.use("/qrs", qrRouter);
 app.use("/guest", guestRouter);
+app.use("/logs", logsRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 

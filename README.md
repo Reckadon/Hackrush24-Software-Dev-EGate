@@ -1,6 +1,6 @@
 # Hackrush 2024 Web dev challenge
 
-This is our submission for the hackrush 2024 web dev challenge
+This is our submission for the hackrush 2024 web dev challenge.
 
 ## Techstack
 

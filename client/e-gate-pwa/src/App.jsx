@@ -30,6 +30,13 @@ function App() {
 				if (user.email.endsWith("iitgn.ac.in")) {
 					const userData = (await API.GetUser(user.uid)).data.user;
 					setUser(userData);
+				} else {
+					try {
+						const userData = (await API.GetVisitor(user.uid)).data.user;
+						setUser(userData);
+					} catch {
+						alert("No visitor exists with this email!");
+					}
 				}
 			}
 		});
@@ -41,26 +48,42 @@ function App() {
 				if (!result || sessionStorage.getItem("redirect-trigger") === "login") return;
 				// This gives you a Google Access Token. You can use it to access Google APIs.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
-				// const token = credential.accessToken;
-
 				// The signed-in user info.
 				const user = result.user;
-				if (user.email.endsWith("iitgn.ac.in")) {
-					// send regData to database
-					const regData = JSON.parse(sessionStorage.getItem("reg-data"));
-					const res = await API.CreateResidentUser({
+
+				// visitor
+				const regData = JSON.parse(sessionStorage.getItem("reg-data"));
+				if (regData.userType === "visitor") {
+					const res = await API.CreateGuestUser({
 						uuid: user.uid,
 						email: user.email,
 						profile: regData.profile,
 						name: user.displayName,
 						userType: regData.userType,
-						graduation: regData.graduation,
+						entryTime: regData.entryTime,
+						exitTime: regData.exitTime,
+						purpose: regData.purpose,
 					});
 					setUser(res.data.user);
-				} else alert("Need valid IIT Gandhinagar email address to register as resident!");
-				// IdP data available using getAdditionalUserInfo(result)
-				// ...
+				} else {
+					// resident
+					if (user.email.endsWith("iitgn.ac.in")) {
+						// send regData to database
+						const res = await API.CreateResidentUser({
+							uuid: user.uid,
+							email: user.email,
+							profile: regData.profile,
+							name: user.displayName,
+							userType: regData.userType,
+							graduation: regData.graduation,
+						});
+						setUser(res.data.user);
+					} else alert("Need valid IIT Gandhinagar email address to register as resident!");
+					// IdP data available using getAdditionalUserInfo(result)
+					// ...
+				}
 			})
+
 			.catch(error => {
 				// Handle Errors here.
 				console.log(error);

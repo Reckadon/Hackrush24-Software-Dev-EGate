@@ -17,9 +17,22 @@ const Content = ({ userData }) => {
 	const [profilePic, setProfilePic] = useState(null);
 	const [residentType, setResidentType] = useState("student");
 	const [gradYear, setGradYear] = useState("2024");
+	const [purpose, setPurpose] = useState();
+	const [entryTime, setEntryTime] = useState();
+	const [entryDate, setEntryDate] = useState();
+	const [exitTime, setExitTime] = useState();
+	const [exitDate, setExitDate] = useState();
 
 	const registerResident = () => {
 		if (!extendResident) {
+			setEntryTime(null);
+			setExitTime(null);
+			setProfilePic(null);
+			setPurpose("");
+			setResidentType("student");
+			setGradYear("2024");
+			setExtendResident(false);
+			setExtendVisitor(true);
 			setExtendResident(true);
 			setExtendVisitor(false);
 		} else {
@@ -31,11 +44,22 @@ const Content = ({ userData }) => {
 	};
 	const registerVisitor = () => {
 		if (!extendVisitor) {
-			setProfilePic("");
+			setProfilePic(null);
 			setResidentType("student");
 			setGradYear("2024");
 			setExtendResident(false);
 			setExtendVisitor(true);
+		} else {
+			const data = {
+				profile: profilePic,
+				userType: "visitor",
+				purpose: purpose,
+				entryTime: new Date(entryDate + " " + entryTime),
+				exitTime: new Date(exitDate + " " + exitTime),
+			};
+			sessionStorage.setItem("redirect-trigger", "register");
+			sessionStorage.setItem("reg-data", JSON.stringify(data));
+			signInWithRedirect(auth, provider);
 		}
 	};
 
@@ -96,6 +120,15 @@ const Content = ({ userData }) => {
 								}}
 							/>
 						</label>
+						<Form.Label>
+							Purpose of Visit:
+							<Form.Control
+								type="text"
+								placeholder="Enter your purpose of visiting"
+								value={purpose}
+								onChange={e => setPurpose(e.target.value)}
+							/>
+						</Form.Label>
 						<Form.Label htmlFor="inputPassword5">
 							Resident Type
 							<Form.Select
@@ -135,7 +168,7 @@ const Content = ({ userData }) => {
 					<div className="icon-holder">
 						<TransferWithinAStationIcon fontSize="large" />
 					</div>
-					<div className="reg-form" style={{ display: !extendResident ? "none" : "flex" }}>
+					<div className="reg-form" style={{ display: !extendVisitor ? "none" : "flex" }}>
 						<label
 							style={{
 								marginBlockEnd: "10px",
@@ -157,20 +190,37 @@ const Content = ({ userData }) => {
 								}}
 							/>
 						</label>
-						<Form.Label htmlFor="inputPassword5">
-							Graduation Year (If Student)
-							<Form.Select
-								defaultValue="2024"
-								aria-label="Resident Type"
-								onChange={e => setGradYear(e.target.value)}
-							>
-								<option value="2024">2024</option>
-								<option value="2024">2025</option>
-								<option value="2026">2026</option>
-								<option value="2027">2027</option>
-								<option value="2028">2028</option>
-								<option value="2029">2029</option>
-							</Form.Select>
+						<Form.Label>
+							Entry Time:
+							<Form.Control
+								type="time"
+								aria-label="Entry Time"
+								onChange={e => setEntryTime(e.target.value)}
+							/>
+						</Form.Label>
+						<Form.Label>
+							Entry Date:
+							<Form.Control
+								type="date"
+								aria-label="Entry date"
+								onChange={e => setEntryDate(e.target.value)}
+							/>
+						</Form.Label>
+						<Form.Label>
+							Exit Time:
+							<Form.Control
+								type="time"
+								aria-label="Entry Time"
+								onChange={e => setExitTime(e.target.value)}
+							/>
+						</Form.Label>
+						<Form.Label>
+							Exit Date:
+							<Form.Control
+								type="date"
+								aria-label="Exit Date"
+								onChange={e => setExitDate(e.target.value)}
+							/>
 						</Form.Label>
 					</div>
 				</div>

@@ -29,7 +29,7 @@ export const isQRValid = async qr => {
   }
   const qrData = qrDoc.data();
 
-  if (qrData.expiry < new Date().getTime()) {
+  if (qrData.expiry < new Date().getTime() && !qrData.inCampus) {
     await deleteQR(qr);
     return false;
   }
@@ -58,5 +58,19 @@ export const getUserByQR = async qr => {
     return (await db.collection("users").doc(qrDoc.data().uuid).get()).data();
   } else {
     return (await db.collection("guestUsers").doc(qrDoc.data().uuid).get()).data();
+  }
+};
+
+export const getAllQRs = async () => {
+  try {
+    const qrs = [];
+    const snapshot = await db.collection("qrs").get();
+    snapshot.forEach(doc => {
+      qrs.push(doc.data());
+    });
+    return qrs;
+  } catch (error) {
+    console.log(error);
+    return error;
   }
 };

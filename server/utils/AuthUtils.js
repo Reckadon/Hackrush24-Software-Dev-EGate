@@ -29,23 +29,34 @@ export const getUser = async uuid => {
   return userDoc.data();
 };
 
-export const createGuestUser = async (email, profile, name, userType, entryTime, exitTime, residentEmailID) => {
+export const createGuestUser = async (
+  uuid,
+  email,
+  profile,
+  name,
+  userType,
+  entryTime,
+  exitTime,
+  purpose,
+  residentEmailID
+) => {
   try {
     const user = {
-      uuid: v4(),
+      uuid,
       email,
       profile,
       name,
       userType,
       entryTime,
       exitTime,
+      purpose,
       approved: false,
     };
 
-    if (userType === "Resident Guest") {
+    if (userType === "Resident's Guest") {
       user.residentEmailID = residentEmailID;
     }
-    user.qr = await createQR(user.uuid, exitTime, "guest");
+    user.qr = (await createQR(user.uuid, exitTime, "guest")).qr;
     await db.collection("guestUsers").doc(uuid).set(user);
     return user;
   } catch (error) {
@@ -67,4 +78,12 @@ export const approveGuestUser = async uuid => {
     console.log(error);
     return error;
   }
+};
+
+export const getGuestUser = async uuid => {
+  const userDoc = await db.collection("guestUsers").doc(uuid).get();
+  if (!userDoc.exists) {
+    return null;
+  }
+  return userDoc.data();
 };

@@ -1,5 +1,7 @@
+import { Logs } from "./Logs";
+
 const Dashboard = () => {
-  return <>dashboard</>;
+  return <Logs />;
 };
 
 export default Dashboard;

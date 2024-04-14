@@ -1,5 +1,5 @@
 import express from "express";
-import { createResidentUser, getUser, createGuestUser } from "../utils/AuthUtils.js";
+import { createResidentUser, getUser, createGuestUser, getGuestUser } from "../utils/AuthUtils.js";
 
 const router = express.Router();
 const SECURITY_LOGIN = "abc";
@@ -37,17 +37,32 @@ router.get("/users/:uuid", async (req, res) => {
   }
 });
 
+router.get("/guest/:uuid", async (req, res) => {
+  const userid = req.params.uuid;
+  try {
+    const user = await getGuestUser(userid);
+    res.json({
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(400);
+  }
+});
+
 router.post("/createGuestUser", async (req, res) => {
   // console.log(req.body);
   const userInfo = req.body.data;
   res.json({
     user: await createGuestUser(
+      userInfo.uuid,
       userInfo.email,
       userInfo.profile,
       userInfo.name,
       userInfo.userType,
       userInfo.entryTime,
-      userInfo.didexitTime,
+      userInfo.exitTime,
+      userInfo.purpose,
       userInfo.residentEmailID
     ),
   });

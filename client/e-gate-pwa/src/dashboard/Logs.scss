@@ -1,0 +1,16 @@
+p {
+  margin: auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  background-color: #f5f5f5;
+
+  .title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}

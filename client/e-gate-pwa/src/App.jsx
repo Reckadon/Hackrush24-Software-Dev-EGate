@@ -11,22 +11,34 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import SecurityUI from "./Security Interface/SecurityUI";
 import SecLogin from "./Security Interface/SecLogin";
 import { API } from "../APIendpoints";
+import Dashboard from "./dashboard/Dashboard";
 
 function App() {
+	const checkIfSecurity = () => {
+		return JSON.parse(sessionStorage.getItem("is-security-personnel")) === null
+			? false
+			: JSON.parse(sessionStorage.getItem("is-security-personnel")).isValid;
+	};
+
 	const auth = getAuth();
 	const [user, setUser] = useState(null);
-	const [checked, setChecked] = useState(false);
+	const [checked, setChecked] = useState(checkIfSecurity());
 
-	auth.onAuthStateChanged(user => {
-		if (user) {
-			if (user.email.endsWith("iitgn.ac.in")) setUser(user);
-		}
-	});
+	useEffect(() => {
+		auth.onAuthStateChanged(async user => {
+			if (user) {
+				if (user.email.endsWith("iitgn.ac.in")) {
+					const userData = (await API.GetUser(user.uid)).data.user;
+					setUser(userData);
+				}
+			}
+		});
+	}, [auth]);
 
 	useEffect(() => {
 		getRedirectResult(auth)
 			.then(async result => {
-				if (!result) return;
+				if (!result || sessionStorage.getItem("redirect-trigger") === "login") return;
 				// This gives you a Google Access Token. You can use it to access Google APIs.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				// const token = credential.accessToken;
@@ -35,7 +47,7 @@ function App() {
 				const user = result.user;
 				if (user.email.endsWith("iitgn.ac.in")) {
 					// send regData to database
-					const regData = sessionStorage.getItem("reg-data");
+					const regData = JSON.parse(sessionStorage.getItem("reg-data"));
 					const res = await API.CreateResidentUser({
 						uuid: user.uid,
 						email: user.email,
@@ -44,8 +56,7 @@ function App() {
 						userType: regData.userType,
 						graduation: regData.graduation,
 					});
-					console.log(res);
-					setUser(user);
+					setUser(res.data.user);
 				} else alert("Need valid IIT Gandhinagar email address to register as resident!");
 				// IdP data available using getAdditionalUserInfo(result)
 				// ...
@@ -84,7 +95,7 @@ function App() {
 											<Navbar.Text>
 												{user ? (
 													<>
-														Signed in as: <em>{user.displayName}</em>
+														Signed in as: <em>{user.name}</em>
 													</>
 												) : (
 													<>Not Signed In</>
@@ -93,13 +104,14 @@ function App() {
 										</Navbar.Collapse>
 									</Container>
 								</Navbar>
-								<Content />
+								<Content userData={user} />
 							</>
 						}
 					/>
 					<Route path="/securitylogin" element={<SecLogin onChecked={() => setChecked(true)} />} />
 					<Route element={<PrivateRoutes checked={checked} />}>
 						<Route path="/security" element={<SecurityUI />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 					</Route>
 				</Routes>
 			</Router>

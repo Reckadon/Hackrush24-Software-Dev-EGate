@@ -10,13 +10,13 @@
 	right: 0;
 	z-index: 50;
 }
-#root > nav .crop {
+#root nav .crop {
 	width: 70px;
 	height: 70px;
 	overflow: hidden;
 	margin-right: 10px;
 }
-#root > nav img {
+#root nav img {
 	width: 135px;
 	height: 135px;
 	margin: -32px -32px;

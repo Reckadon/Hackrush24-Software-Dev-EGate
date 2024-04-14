@@ -29,6 +29,10 @@
 	width: 360px;
 	height: 450px;
 }
+.bg-container > .choice-card.qr .icon-holder {
+	margin: unset;
+	margin-top: 10px;
+}
 
 .bg-container > .choice-card h2 {
 	width: 100%;
@@ -74,6 +78,10 @@
 		margin-bottom: 150px;
 		margin-top: 50px;
 	}
+	.bg-container > .choice-card.qr .icon-holder {
+		margin: unset;
+		margin-top: 15px;
+	}
 	.bg-container > .choice-card .icon-holder > svg {
 		transform-origin: top;
 	}
@@ -88,6 +96,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	.bg-container > .choice-card.qr .icon-holder {
+		margin: unset;
 	}
 	.bg-container > .choice-card.extended {
 		width: 800px;

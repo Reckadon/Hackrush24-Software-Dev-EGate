@@ -1,13 +1,25 @@
+/* eslint-disable react/prop-types */
 import { Button, Form } from "react-bootstrap";
 import "./seclogin.scss";
 import { useState } from "react";
+import { API } from "../../APIendpoints";
+import { useNavigate } from "react-router-dom";
 
-const SecLogin = () => {
+const SecLogin = ({ onChecked }) => {
 	const [id, setID] = useState("");
 	const [pass, setPass] = useState("");
+	const navigate = useNavigate();
 
-	const check = () => {
+	const check = async e => {
+		e.preventDefault();
 		//handle security login
+		const res = await API.VerifySecurity(id, pass);
+		const isValid = res.data.success;
+		if (isValid) {
+			onChecked();
+			navigate("/security");
+			sessionStorage.setItem("is-security-personnel", JSON.stringify({ isValid: true }));
+		} else alert("Wrong ID or Password!");
 	};
 	return (
 		<div className="security-login">
@@ -32,7 +44,7 @@ const SecLogin = () => {
 						onChange={e => setPass(e.target.value)}
 					/>
 				</Form.Group>
-				<Button variant="primary" type="submit" onClick={check}>
+				<Button variant="primary" type="submit" onClick={e => check(e)}>
 					Submit
 				</Button>
 			</Form>

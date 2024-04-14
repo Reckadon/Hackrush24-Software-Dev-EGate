@@ -6,7 +6,8 @@ const VerifiedUserBlock = ({ userData }) => {
 		<div className="user-block">
 			<CheckIcon />
 			<img src={userData.profile} />
-			Name: {userData.name} <br />
+			<h4>Name: {userData.name} </h4>
+			<h5 style={{ textTransform: "capitalize" }}>{userData.userType}</h5>
 		</div>
 	);
 };
